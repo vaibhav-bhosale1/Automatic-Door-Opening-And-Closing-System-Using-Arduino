@@ -1,0 +1,27 @@
+#include <Servo.h>
+
+Servo myservo;  // Create a servo object to control a servo motor
+int led = 6;    // Pin connected to the LED
+int pir = 2;    // Pin connected to the PIR sensor
+
+void setup() {
+  pinMode(pir, INPUT);   // Set the PIR sensor pin as an input
+  pinMode(led, OUTPUT);  // Set the LED pin as an output
+  myservo.attach(9);     // Attach the servo to pin 9
+  Serial.begin(9600);    // Start serial communication for debugging
+}
+
+void loop() {
+  int val = digitalRead(pir);  // Read the PIR sensor value (HIGH or LOW)
+  Serial.println(val);         // Print the sensor value to the serial monitor
+
+  if (val == HIGH) {  // If motion is detected by the PIR sensor
+    digitalWrite(led, LOW);   // Turn off the LED
+    myservo.write(90);        // Move the servo to 90 degrees (open position)
+  } else {
+    digitalWrite(led, HIGH);  // Turn on the LED
+    myservo.write(180);       // Move the servo to 180 degrees (closed position)
+  }
+
+  delay(10);  // Add a small delay to prevent rapid toggling due to sensor noise
+}
